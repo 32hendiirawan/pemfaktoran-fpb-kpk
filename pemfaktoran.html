@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Kalkulator Pohon Faktor interaktif bergaya petualangan matematika untuk anak-anak.">
+    <title>Petualangan Angka: Pohon Faktor Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --accent: #FFE66D;
+            --dark: #2F3E46;
+            --bg-game: #F7FFF7;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body { 
+            background: linear-gradient(180deg, #74b9ff 0%, #a29bfe 100%);
+            padding: 10px; 
+            color: var(--dark); 
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-card { 
+            width: 100%;
+            max-width: 412px; 
+            background: var(--bg-game); 
+            padding: 20px; 
+            border-radius: 30px; 
+            box-shadow: 0 12px 0px rgba(0,0,0,0.15), inset 0 -8px 0px rgba(0,0,0,0.05);
+            border: 4px solid var(--dark);
+            position: relative;
+        }
+
+        h2 { 
+            font-family: 'Fredoka One', cursive;
+            text-align: center; 
+            color: #2d3436; 
+            font-size: 26px;
+            margin: 0 0 5px 0;
+            text-shadow: 3px 3px 0px var(--accent);
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            text-align: center; 
+            font-size: 14px; 
+            color: #636e72; 
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Input Area */
+        .input-group { 
+            display: flex; 
+            justify-content: center; 
+            margin-bottom: 20px;
+        }
+
+        .input-box {
+            position: relative;
+            width: 60%;
+        }
+        
+        input { 
+            width: 100%; 
+            padding: 15px 10px; 
+            border: 3px solid var(--dark); 
+            border-radius: 18px; 
+            text-align: center; 
+            font-size: 22px; 
+            font-weight: 900;
+            color: var(--dark);
+            background: #fff;
+            box-shadow: 0 6px 0px var(--dark);
+            cursor: pointer;
+            caret-color: transparent;
+        }
+
+        input.active-input {
+            background: #fffdf0;
+            border-color: #e67e22;
+            transform: translateY(2px);
+            box-shadow: 0 4px 0px var(--dark);
+        }
+
+        .input-label {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            border: 2px solid var(--dark);
+            padding: 2px 12px;
+            font-size: 12px;
+            font-weight: 900;
+            border-radius: 8px;
+            white-space: nowrap;
+            z-index: 2;
+        }
+
+        /* Game Buttons */
+        .button-group { 
+            display: flex; 
+            gap: 12px; 
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .btn-action { 
+            flex: 1;
+            padding: 12px; 
+            border: 3px solid var(--dark); 
+            border-radius: 18px; 
+            cursor: pointer; 
+            font-family: 'Fredoka One', cursive;
+            font-size: 15px; 
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        .btn-calc { 
+            background: #4ECDC4; 
+            color: white; 
+            box-shadow: 0 6px 0px var(--dark);
+        }
+        .btn-calc:active { 
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px var(--dark);
+        }
+
+        .btn-tree { 
+            background: #ffbe76; 
+            color: var(--dark); 
+            box-shadow: 0 6px 0px var(--dark);
+        }
+        .btn-tree:active { 
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px var(--dark);
+        }
+
+        .btn-reset { 
+            background: #ff7675; 
+            color: white; 
+            box-shadow: 0 6px 0px var(--dark);
+        }
+        .btn-reset:active { 
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px var(--dark);
+        }
+
+        /* Numpad Game */
+        .numpad-container {
+            background: #dfe6e9;
+            border: 3px solid var(--dark);
+            border-radius: 20px;
+            padding: 12px;
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            box-shadow: inset 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .numpad-container.hidden { display: none; }
+
+        .btn-num {
+            background: #fff;
+            border: 2px solid var(--dark);
+            border-radius: 12px;
+            padding: 12px 0;
+            font-family: 'Fredoka One', cursive;
+            font-size: 20px;
+            color: var(--dark);
+            box-shadow: 0 4px 0px var(--dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-num:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0px var(--dark);
+        }
+        .btn-delete { background: #ffeaa7; }
+        
+        .btn-home {
+            background: #74b9ff;
+            color: white;
+            font-size: 15px;
+            font-weight: 900;
+        }
+
+        /* Hasil Pengerjaan Box */
+        .section-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 16px;
+            margin: 20px 0 10px 0;
+            color: #2d3436;
+        }
+
+        .step-box { 
+            padding: 15px; 
+            border-radius: 20px; 
+            border: 3px solid var(--dark);
+            position: relative;
+            background: #f0f7ff; 
+            box-shadow: 0 6px 0px #74b9ff;
+            margin-bottom: 20px;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+
+        .badge-result {
+            position: absolute;
+            top: -15px;
+            left: 15px;
+            font-family: 'Fredoka One', cursive;
+            padding: 4px 15px;
+            border-radius: 10px;
+            border: 3px solid var(--dark);
+            color: white;
+            font-size: 14px;
+            background: #0984e3;
+        }
+
+        .result-text { 
+            font-family: 'Fredoka One', cursive;
+            font-size: 24px; 
+            margin: 10px 0 0 0;
+            color: #0984e3;
+            text-align: center;
+        }
+        sup { font-size: 16px; color: #ff7675; }
+
+        /* Canvas Arena Pohon Faktor */
+        #canvas-container { 
+            background: white; 
+            border: 3px solid var(--dark); 
+            border-radius: 20px; 
+            padding: 15px; 
+            width: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.05);
+            animation: popIn 0.4s ease;
+        }
+
+        .node-ellipse { fill: #fff; stroke: var(--dark); stroke-width: 3; }
+        .prime-ellipse { fill: #ff7675; stroke: var(--dark); stroke-width: 3; } 
+        .node-text { font-family: 'Fredoka One', cursive; font-size: 16px; fill: var(--dark); text-anchor: middle; dominant-baseline: middle; }
+        .prime-text { font-family: 'Fredoka One', cursive; font-size: 16px; fill: white; text-anchor: middle; dominant-baseline: middle; }
+        .line { stroke: var(--dark); stroke-width: 4; stroke-linecap: round; }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-card">
+    <h2>Faktorisasi Prima</h2>
+    <div class="subtitle">Dengan Metode Pohon Faktor 🌳</div>
+    
+    <div class="input-group">
+        <div class="input-box">
+            <span class="input-label">Masukkan Angka</span>
+            <input type="text" id="numInput" value="" placeholder="?" readonly onclick="selectInput()">
+        </div>
+    </div>
+
+    <div class="button-group">
+        <button class="btn-action btn-calc" onclick="actionFaktorkan()">FAKTORKAN</button>
+        <button class="btn-action btn-reset" onclick="resetAll()">RESET</button>
+    </div>
+
+    <div id="game-numpad" class="numpad-container">
+        <button class="btn-num" onclick="pressNum('1')">1</button>
+        <button class="btn-num" onclick="pressNum('2')">2</button>
+        <button class="btn-num" onclick="pressNum('3')">3</button>
+        <button class="btn-num" onclick="pressNum('4')">4</button>
+        <button class="btn-num" onclick="pressNum('5')">5</button>
+        <button class="btn-num" onclick="pressNum('6')">6</button>
+        <button class="btn-num" onclick="pressNum('7')">7</button>
+        <button class="btn-num" onclick="pressNum('8')">8</button>
+        <button class="btn-num" onclick="pressNum('9')">9</button>
+        <button class="btn-num btn-delete" onclick="pressDelete()">⌫</button>
+        <button class="btn-num" onclick="pressNum('0')">0</button>
+        <button class="btn-num btn-home" onclick="goToIndex()">🏠 MENU</button>
+    </div>
+
+    <div id="result-wrapper" style="display: none;">
+        <div class="section-title">✨ Hasil Petualangan:</div>
+        <div class="step-box">
+            <span class="badge-result">🏆 Faktorisasi Prima</span>
+            <div id="factorResult" class="result-text"></div>
+        </div>
+    </div>
+
+    <div id="canvas-container" style="display: none;">
+        <span style="font-family: 'Fredoka One', cursive; font-size: 14px; margin-bottom: 10px; color: #636e72;">Peta Pohon Faktor 🌳</span>
+        <svg id="treeSvg" width="360" height="400"></svg>
+    </div>
+</div>
+
+<script>
+document.getElementById('numInput').classList.add('active-input');
+
+function goToIndex() {
+    window.location.href = 'index.html';
+}
+
+function selectInput() {
+    document.getElementById('numInput').classList.add('active-input');
+    document.getElementById('game-numpad').classList.remove('hidden');
+}
+
+function hideNumpad() {
+    document.getElementById('numInput').classList.remove('active-input');
+    document.getElementById('game-numpad').classList.add('hidden');
+}
+
+function pressNum(num) {
+    const inputEl = document.getElementById('numInput');
+    if (inputEl.value.length < 4) { 
+        inputEl.value += num;
+    }
+}
+
+function pressDelete() {
+    const inputEl = document.getElementById('numInput');
+    inputEl.value = inputEl.value.slice(0, -1);
+}
+
+function resetAll() {
+    document.getElementById('numInput').value = '';
+    document.getElementById('factorResult').innerHTML = '';
+    document.getElementById('result-wrapper').style.display = 'none';
+    document.getElementById('canvas-container').style.display = 'none';
+    document.getElementById('treeSvg').innerHTML = '';
+    selectInput();
+}
+
+function actionFaktorkan() {
+    const n = parseInt(document.getElementById('numInput').value);
+    if (isNaN(n) || n < 2) {
+        alert("Masukkan angka yang lebih besar dari 1 ya! 🎯");
+        return;
+    }
+    hideNumpad();
+    document.getElementById('result-wrapper').style.display = 'block';
+    document.getElementById('canvas-container').style.display = 'flex';
+    drawFactorTree(n);
+}
+
+function drawFactorTree(n) {
+    const svg = document.getElementById('treeSvg');
+    const factorResult = document.getElementById('factorResult');
+    svg.innerHTML = ''; 
+
+    let currentN = n;
+    let d = 2;
+    let x = 180;      
+    let y = 30;       
+    let offset = 45;  
+    let vStep = 65;   
+    
+    let factors = {};
+
+    drawNode(svg, x, y, n, false);
+
+    while (currentN > 1) {
+        if (currentN % d === 0) {
+            factors[d] = (factors[d] || 0) + 1;
+            let nextN = currentN / d;
+            
+            let leftX = x - offset;
+            let rightX = x + offset;
+            let nextY = y + vStep;
+
+            drawLine(svg, x, y + 15, leftX, nextY - 15);
+            drawLine(svg, x, y + 15, rightX, nextY - 15);
+
+            drawNode(svg, leftX, nextY, d, true);
+            drawNode(svg, rightX, nextY, nextN, false);
+
+            currentN = nextN;
+            x = rightX;
+            y = nextY;
+            if (currentN === 1) break;
+        } else {
+            d++;
+        }
+    }
+
+    let finalFactor = Object.entries(factors).map(([base, exp]) => {
+        return exp > 1 ? `${base}<sup>${exp}</sup>` : `${base}`;
+    }).join(' × ');
+    factorResult.innerHTML = `${finalFactor}`;
+    
+    const padding = 40;
+    const totalHeight = y + padding;
+    
+    const maxRight = x + offset + padding; 
+    const baseWidth = 360;
+    const finalWidth = maxRight > baseWidth ? maxRight : baseWidth;
+
+    svg.setAttribute('height', totalHeight);
+    svg.setAttribute('viewBox', `0 0 ${finalWidth} ${totalHeight}`);
+}
+
+function drawNode(svg, x, y, text, isPrime) {
+    const ellipse = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
+    ellipse.setAttribute("cx", x);
+    ellipse.setAttribute("cy", y);
+    ellipse.setAttribute("rx", 26);
+    ellipse.setAttribute("ry", 20);
+    ellipse.setAttribute("class", isPrime ? "prime-ellipse" : "node-ellipse");
+    svg.appendChild(ellipse);
+
+    const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    txt.setAttribute("x", x);
+    txt.setAttribute("y", y);
+    txt.setAttribute("class", isPrime ? "prime-text" : "node-text");
+    txt.textContent = text;
+    svg.appendChild(txt);
+}
+
+function drawLine(svg, x1, y1, x2, y2) {
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", x1);
+    line.setAttribute("y1", y1);
+    line.setAttribute("x2", x2);
+    line.setAttribute("y2", y2);
+    line.setAttribute("class", "line");
+    svg.appendChild(line);
+}
+
+function toggleTree() {
+    var x = document.getElementById('canvas-container');
+    if (x.style.display === 'none') {
+        x.style.display = 'flex';
+    } else {
+        x.style.display = 'none';
+    }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Gerbang Petualangan Matematika: Pohon Faktor, FPB & KPK untuk Anak-Anak.">
+    <title>Petualangan Angka: Beranda Utama</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --accent: #FFE66D;
+            --dark: #2F3E46;
+            --bg-game: #F7FFF7;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body { 
+            background: linear-gradient(180deg, #74b9ff 0%, #a29bfe 100%);
+            padding: 10px; 
+            color: var(--dark); 
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-card { 
+            width: 100%;
+            max-width: 412px; 
+            background: var(--bg-game); 
+            padding: 30px 20px; 
+            border-radius: 30px; 
+            box-shadow: 0 12px 0px rgba(0,0,0,0.15), inset 0 -8px 0px rgba(0,0,0,0.05);
+            border: 4px solid var(--dark);
+            text-align: center;
+            position: relative;
+        }
+
+        .logo-area {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        h1 { 
+            font-family: 'Fredoka One', cursive;
+            color: #2d3436; 
+            font-size: 32px;
+            margin: 0 0 5px 0;
+            text-shadow: 4px 4px 0px var(--accent);
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 15px; 
+            color: #636e72; 
+            font-weight: 700;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Menu Buttons Layout */
+        .menu-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .btn-menu {
+            display: block;
+            text-decoration: none;
+            padding: 16px 20px;
+            border: 3px solid var(--dark);
+            border-radius: 20px;
+            font-family: 'Fredoka One', cursive;
+            font-size: 18px;
+            letter-spacing: 0.5px;
+            color: var(--dark);
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            position: relative;
+            box-shadow: 0 8px 0px var(--dark);
+            text-align: center;
+        }
+
+        .btn-menu:active {
+            transform: translateY(6px);
+            box-shadow: 0 2px 0px var(--dark);
+        }
+
+        .btn-factor {
+            background: #4ECDC4;
+            color: white;
+        }
+
+        .btn-fpbkpk {
+            background: #ffbe76;
+            color: var(--dark);
+        }
+
+        .btn-about {
+            background: #ff7675;
+            color: white;
+        }
+
+        /* Icon Badge di dalam Tombol */
+        .btn-icon {
+            margin-right: 8px;
+            font-size: 20px;
+            vertical-align: middle;
+        }
+
+        /* Modal Pop-up untuk About Profil Pembuat */
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(47, 62, 70, 0.6);
+            border-radius: 26px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: #fff;
+            border: 4px solid var(--dark);
+            border-radius: 24px;
+            width: 85%;
+            padding: 20px;
+            box-shadow: 0 10px 0px rgba(0,0,0,0.2);
+            transform: scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+        }
+
+        .modal-overlay.show .modal-box {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 22px;
+            color: #ff7675;
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 0px var(--accent);
+        }
+
+        .profile-info {
+            background: #f0f7ff;
+            border: 2px dashed #74b9ff;
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .profile-name {
+            font-family: 'Fredoka One', cursive;
+            font-size: 18px;
+            color: var(--dark);
+            margin: 4px 0;
+        }
+
+        .contact-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .link-contact {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 10px;
+            border: 2px solid var(--dark);
+            border-radius: 12px;
+            color: var(--dark);
+            box-shadow: 0 4px 0px var(--dark);
+        }
+
+        .link-contact:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0px var(--dark);
+        }
+
+        .link-email { background: #dfe6e9; }
+        .link-wa { background: #2ecc71; color: white; }
+
+        .btn-close {
+            background: #ff7675;
+            color: white;
+            border: 2px solid var(--dark);
+            border-radius: 12px;
+            padding: 8px 20px;
+            font-family: 'Fredoka One', cursive;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 0px var(--dark);
+        }
+
+        .btn-close:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0px var(--dark);
+        }
+
+        .footer-credit {
+            font-size: 11px;
+            color: #b2bec3;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-card">
+    <div class="logo-area">
+        <h1>Petualangan<br>Angka</h1>
+        <div class="subtitle">Modul Belajar Matematika Seru 🚀</div>
+    </div>
+    
+    <div class="menu-group">
+        <a href="pemfaktoran.html" class="btn-menu btn-factor">
+            <span class="btn-icon">🌳</span>Faktorisasi Prima
+        </a>
+        
+        <a href="fpb-kpk.html" class="btn-menu btn-fpbkpk">
+            <span class="btn-icon">🏆</span>Kalkulator FPB & KPK
+        </a>
+        
+        <button class="btn-menu btn-about" onclick="openAbout()">
+            <span class="btn-icon">✨</span>Tentang Pembuat
+        </button>
+    </div>
+
+    <div class="footer-credit">V1.0 • O'Cre - Omah Creative</div>
+
+    <div id="aboutModal" class="modal-overlay" onclick="closeAboutOutside(event)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <h3 class="modal-title">Halo Sahabat! 👋</h3>
+            
+            <div class="profile-info">
+                Aplikasi matematika ini dibuat dengan penuh kasih sayang oleh:
+                <div class="profile-name">O'Cre (Omah Creative)</div>
+                <span style="font-size: 12px; color: #b2bec3;">Mari belajar bersama dengan ceria!</span>
+            </div>
+
+            <div class="contact-group">
+                <a href="mailto:32hendiirawan@gmail.com" class="link-contact link-email">
+                    📧 <span>32hendiirawan@gmail.com</span>
+                </a>
+                <a href="https://wa.me/6282289015759" target="_blank" class="link-contact link-wa">
+                    💬 <span>WhatsApp</span>
+                </a>
+            </div>
+
+            <button class="btn-close" onclick="closeAbout()">TUTUP</button>
+        </div>
+    </div>
+</div>
+
+<script>
+function openAbout() {
+    document.getElementById('aboutModal').classList.add('show');
+}
+
+function closeAbout() {
+    document.getElementById('aboutModal').classList.remove('show');
+}
+
+function closeAboutOutside(event) {
+    closeAbout();
+}
+</script>
+
+</body>
+</html>

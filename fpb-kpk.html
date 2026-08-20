@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Kalkulator FPB & KPK interaktif bergaya game petualangan matematika untuk anak-anak dengan numpad kustom.">
+    <title>Petualangan Angka: FPB & KPK</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --accent: #FFE66D;
+            --dark: #2F3E46;
+            --bg-game: #F7FFF7;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body { 
+            background: linear-gradient(180deg, #74b9ff 0%, #a29bfe 100%);
+            padding: 10px; 
+            color: var(--dark); 
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-card { 
+            width: 100%;
+            max-width: 412px; 
+            background: var(--bg-game); 
+            padding: 20px; 
+            border-radius: 30px; 
+            box-shadow: 0 12px 0px rgba(0,0,0,0.15), inset 0 -8px 0px rgba(0,0,0,0.05);
+            border: 4px solid var(--dark);
+            position: relative;
+        }
+
+        h2 { 
+            font-family: 'Fredoka One', cursive;
+            text-align: center; 
+            color: #2d3436; 
+            font-size: 26px;
+            margin: 0 0 5px 0;
+            text-shadow: 3px 3px 0px var(--accent);
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            text-align: center; 
+            font-size: 14px; 
+            color: #636e72; 
+            font-weight: 700;
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Input Group */
+        .input-group { 
+            display: flex; 
+            gap: 12px; 
+            margin-bottom: 25px; 
+            justify-content: center; 
+        }
+
+        .input-box {
+            position: relative;
+            flex: 1;
+        }
+        
+        input { 
+            width: 100%; 
+            padding: 15px 10px; 
+            border: 3px solid var(--dark); 
+            border-radius: 18px; 
+            text-align: center; 
+            font-size: 20px; 
+            font-weight: 900;
+            color: var(--dark);
+            background: #fff;
+            box-shadow: 0 6px 0px var(--dark);
+            cursor: pointer;
+            caret-color: transparent;
+        }
+
+        input.active-input {
+            background: #fffdf0;
+            border-color: #e67e22;
+            transform: translateY(2px);
+            box-shadow: 0 4px 0px var(--dark);
+        }
+
+        .input-label {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            border: 2px solid var(--dark);
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 900;
+            border-radius: 8px;
+            white-space: nowrap;
+            z-index: 2;
+        }
+
+        /* Action Buttons */
+        .button-group { 
+            display: flex; 
+            gap: 15px; 
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .btn-action { 
+            flex: 1;
+            padding: 14px; 
+            border: 3px solid var(--dark); 
+            border-radius: 18px; 
+            cursor: pointer; 
+            font-family: 'Fredoka One', cursive;
+            font-size: 18px; 
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .btn-calc { 
+            background: #ffbe76; 
+            color: var(--dark); 
+            box-shadow: 0 6px 0px var(--dark);
+        }
+        .btn-calc:active { 
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px var(--dark);
+        }
+
+        .btn-reset { 
+            background: #ff7675; 
+            color: white; 
+            box-shadow: 0 6px 0px var(--dark);
+        }
+        .btn-reset:active { 
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px var(--dark);
+        }
+
+        /* KUSTOM NUMPAD */
+        .numpad-container {
+            background: #dfe6e9;
+            border: 3px solid var(--dark);
+            border-radius: 20px;
+            padding: 12px;
+            margin-top: 15px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            box-shadow: inset 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .numpad-container.hidden {
+            display: none;
+        }
+
+        .btn-num {
+            background: #fff;
+            border: 2px solid var(--dark);
+            border-radius: 12px;
+            padding: 12px 0;
+            font-family: 'Fredoka One', cursive;
+            font-size: 20px;
+            color: var(--dark);
+            box-shadow: 0 4px 0px var(--dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-num:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0px var(--dark);
+        }
+
+        .btn-delete {
+            background: #ffeaa7;
+        }
+
+        .btn-home {
+            background: #74b9ff;
+            color: white;
+            font-size: 15px;
+            font-weight: 900;
+        }
+
+        /* Hasil Output */
+        .section-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 16px;
+            margin: 15px 0 10px 0;
+            color: #2d3436;
+        }
+
+        .factor-card {
+            background: #fff;
+            border: 3px solid var(--dark);
+            border-radius: 15px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .factor-num {
+            background: var(--secondary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 10px;
+            font-weight: 900;
+            border: 2px solid var(--dark);
+        }
+
+        .factor-line { font-family: 'Fredoka One', cursive; font-size: 16px; }
+        
+        .step-box { 
+            margin-top: 15px; 
+            padding: 15px; 
+            border-radius: 20px; 
+            border: 3px solid var(--dark);
+            position: relative;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+
+        .step-fpb { background: #fff0f0; box-shadow: 0 6px 0px #fab1a0; }
+        .step-kpk { background: #f0f7ff; box-shadow: 0 6px 0px #74b9ff; margin-top: 25px; }
+
+        .badge-result {
+            position: absolute;
+            top: -15px;
+            left: 15px;
+            font-family: 'Fredoka One', cursive;
+            padding: 4px 15px;
+            border-radius: 10px;
+            border: 3px solid var(--dark);
+            color: white;
+            font-size: 14px;
+        }
+
+        .bg-fpb { background: #ff7675; }
+        .bg-kpk { background: #0984e3; }
+        .result-text { font-family: 'Fredoka One', cursive; font-size: 22px; margin: 8px 0 2px 0; }
+        .highlight-fpb { color: #d63031; }
+        .highlight-kpk { color: #0984e3; }
+        .explanation { font-size: 12px; color: #636e72; font-weight: 700; display: block; line-height: 1.4; }
+        sup { font-size: 14px; color: #ff7675; }
+        
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-card">
+    <h2>Kalkulator FPB & KPK</h2>
+    <div class="subtitle">Masukkan angka untuk menghitung FPB dan KPK</div>
+    
+    <div class="input-group">
+        <div class="input-box">
+            <span class="input-label">Angka 1</span>
+            <input type="text" id="num1" placeholder="?" readonly onclick="selectInput('num1')">
+        </div>
+        <div class="input-box">
+            <span class="input-label">Angka 2</span>
+            <input type="text" id="num2" placeholder="?" readonly onclick="selectInput('num2')">
+        </div>
+        <div class="input-box">
+            <span class="input-label">Angka 3</span>
+            <input type="text" id="num3" placeholder="Opsional" readonly onclick="selectInput('num3')">
+        </div>
+    </div>
+
+    <div class="button-group">
+        <button class="btn-action btn-calc" onclick="calculate()">HITUNG !</button>
+        <button class="btn-action btn-reset" onclick="resetAll()">RESET</button>
+    </div>
+
+    <div id="game-numpad" class="numpad-container">
+        <button class="btn-num" onclick="pressNum('1')">1</button>
+        <button class="btn-num" onclick="pressNum('2')">2</button>
+        <button class="btn-num" onclick="pressNum('3')">3</button>
+        <button class="btn-num" onclick="pressNum('4')">4</button>
+        <button class="btn-num" onclick="pressNum('5')">5</button>
+        <button class="btn-num" onclick="pressNum('6')">6</button>
+        <button class="btn-num" onclick="pressNum('7')">7</button>
+        <button class="btn-num" onclick="pressNum('8')">8</button>
+        <button class="btn-num" onclick="pressNum('9')">9</button>
+        <button class="btn-num btn-delete" onclick="pressDelete()">⌫</button>
+        <button class="btn-num" onclick="pressNum('0')">0</button>
+        <button class="btn-num btn-home" onclick="goToIndex()">🏠 MENU</button>
+    </div>
+
+    <div id="output"></div>
+</div>
+
+<script>
+let currentTargetInputId = 'num1'; 
+
+document.getElementById(currentTargetInputId).classList.add('active-input');
+
+function goToIndex() {
+    window.location.href = 'index.html';
+}
+
+function selectInput(id) {
+    document.getElementById('num1').classList.remove('active-input');
+    document.getElementById('num2').classList.remove('active-input');
+    document.getElementById('num3').classList.remove('active-input');
+    
+    currentTargetInputId = id;
+    document.getElementById(id).classList.add('active-input');
+    document.getElementById('game-numpad').classList.remove('hidden');
+}
+
+function pressNum(num) {
+    const inputEl = document.getElementById(currentTargetInputId);
+    if (inputEl.value.length < 4) {
+        inputEl.value += num;
+    }
+}
+
+function pressDelete() {
+    const inputEl = document.getElementById(currentTargetInputId);
+    inputEl.value = inputEl.value.slice(0, -1);
+}
+
+function hideNumpad() {
+    document.getElementById('game-numpad').classList.add('hidden');
+    document.getElementById('num1').classList.remove('active-input');
+    document.getElementById('num2').classList.remove('active-input');
+    document.getElementById('num3').classList.remove('active-input');
+}
+
+function getPrimeFactors(n) {
+    let factors = {};
+    let d = 2;
+    let temp = n;
+    while (temp > 1) {
+        while (temp % d === 0) {
+            factors[d] = (factors[d] || 0) + 1;
+            temp /= d;
+        }
+        d++;
+        if (d * d > temp && temp > 1) {
+            factors[temp] = (factors[temp] || 0) + 1;
+            break;
+        }
+    }
+    return factors;
+}
+
+function formatFactors(factors) {
+    return Object.entries(factors).map(([base, exp]) => {
+        return exp > 1 ? `${base}<sup>${exp}</sup>` : `${base}`;
+    }).join(' × ');
+}
+
+function resetAll() {
+    document.getElementById('num1').value = '';
+    document.getElementById('num2').value = '';
+    document.getElementById('num3').value = '';
+    document.getElementById('output').innerHTML = '';
+    selectInput('num1');
+}
+
+function calculate() {
+    const inputs = [
+        parseInt(document.getElementById('num1').value),
+        parseInt(document.getElementById('num2').value),
+        parseInt(document.getElementById('num3').value)
+    ].filter(val => !isNaN(val) && val > 1);
+
+    if (inputs.length < 2) {
+        alert("Isi minimal 2 kotak angka yang lebih besar dari 1 ya! 🎯");
+        return;
+    }
+
+    hideNumpad();
+
+    let allFactors = inputs.map(n => getPrimeFactors(n));
+    let html = `<div class="section-title">✨ Faktorisasi Prima:</div>`;
+
+    inputs.forEach((num, i) => {
+        html += `
+        <div class="factor-card">
+            <span class="factor-num">${num}</span>
+            <div class="factor-line">${formatFactors(allFactors[i])}</div>
+        </div>`;
+    });
+
+    let allPrimes = new Set();
+    allFactors.forEach(f => Object.keys(f).forEach(p => allPrimes.add(parseInt(p))));
+    let sortedPrimes = Array.from(allPrimes).sort((a, b) => a - b);
+
+    let fpbParts = [];
+    let fpbVal = 1;
+    sortedPrimes.forEach(p => {
+        let isInAll = allFactors.every(f => f[p] !== undefined);
+        if (isInAll) {
+            let minExp = Math.min(...allFactors.map(f => f[p]));
+            fpbVal *= Math.pow(p, minExp);
+            fpbParts.push(minExp > 1 ? `${p}<sup>${minExp}</sup>` : `${p}`);
+        }
+    });
+
+    let kpkParts = [];
+    let kpkVal = 1;
+    sortedPrimes.forEach(p => {
+        let maxExp = Math.max(...allFactors.map(f => f[p] || 0));
+        kpkVal *= Math.pow(p, maxExp);
+        kpkParts.push(maxExp > 1 ? `${p}<sup>${maxExp}</sup>` : `${p}`);
+    });
+
+    html += `
+    <div class="step-box step-fpb">
+        <span class="badge-result bg-fpb">🏆 Kunci FPB</span>
+        <p class="result-text highlight-fpb">${fpbParts.join(' × ') || '1'} = ${fpbVal}</p>
+        <span class="explanation">💡 <b>Rahasia:</b> Diambil dari angka faktor yang sama dengan pangkat paling kecil!</span>
+    </div>`;
+
+    html += `
+    <div class="step-box step-kpk" style="animation-delay: 0.1s;">
+        <span class="badge-result bg-kpk">🚀 Kunci KPK</span>
+        <p class="result-text highlight-kpk">${kpkParts.join(' × ')} = ${kpkVal}</p>
+        <span class="explanation">💡 <b>Rahasia:</b> Serbu semua angka faktor! Jika ada yang sama, pilih pangkat yang paling besar!</span>
+    </div>`;
+
+    document.getElementById('output').innerHTML = html;
+}
+</script>
+</body>
+</html>
