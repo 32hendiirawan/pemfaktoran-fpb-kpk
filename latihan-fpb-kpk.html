@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Latihan Soal FPB dan KPK Interaktif">
+    <title>Latihan FPB & KPK</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --accent: #FFE66D;
+            --dark: #2F3E46;
+            --bg-game: #F7FFF7;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body { 
+            background: linear-gradient(180deg, #74b9ff 0%, #a29bfe 100%);
+            padding: 10px; 
+            color: var(--dark); 
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-card { 
+            width: 100%;
+            max-width: 480px; 
+            background: var(--bg-game); 
+            padding: 20px; 
+            border-radius: 30px; 
+            box-shadow: 0 12px 0px rgba(0,0,0,0.15), inset 0 -8px 0px rgba(0,0,0,0.05);
+            border: 4px solid var(--dark);
+            position: relative;
+        }
+
+        h2 { 
+            font-family: 'Fredoka One', cursive;
+            text-align: center; 
+            color: #2d3436; 
+            font-size: 24px;
+            margin: 0 0 5px 0;
+            text-shadow: 3px 3px 0px var(--accent);
+        }
+
+        .subtitle {
+            text-align: center; 
+            font-size: 13px; 
+            color: #636e72; 
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .question-card {
+            background: #fff;
+            border: 3px solid var(--dark);
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 6px 0px rgba(0,0,0,0.05);
+        }
+
+        .question-header {
+            font-family: 'Fredoka One', cursive;
+            font-size: 16px;
+            color: #0984e3;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge-q {
+            background: var(--accent);
+            padding: 4px 10px;
+            border-radius: 10px;
+            border: 2px solid var(--dark);
+            color: var(--dark);
+            font-size: 12px;
+        }
+
+        /* Layout diperbaiki agar tidak memotong SVG */
+        .trees-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 10px 5px;
+            border-bottom: 2px dashed #b2bec3;
+            margin-bottom: 15px;
+        }
+
+        .tree-box {
+            flex: 1;
+            min-width: 170px;
+            text-align: center;
+            overflow: visible;
+        }
+
+        .tree-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 14px;
+            color: #d63031;
+            margin-bottom: 5px;
+        }
+
+        .tree-input {
+            width: 38px;
+            height: 32px;
+            text-align: center;
+            font-family: 'Fredoka One', cursive;
+            font-size: 14px;
+            border: 2px solid var(--dark);
+            border-radius: 8px;
+            outline: none;
+            background: #fffdf0;
+        }
+
+        .tree-input:focus {
+            border-color: #e67e22;
+            background: #fff;
+        }
+
+        .final-input-group {
+            background: #f0f7ff;
+            padding: 12px;
+            border-radius: 14px;
+            border: 2px dashed #74b9ff;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .final-input-label {
+            font-size: 13px;
+            font-weight: 800;
+            color: #2d3436;
+        }
+
+        .final-input {
+            width: 90px;
+            padding: 6px 10px;
+            border: 2px solid var(--dark);
+            border-radius: 10px;
+            font-family: 'Fredoka One', cursive;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+        }
+
+        .node-ellipse { fill: #fff; stroke: var(--dark); stroke-width: 3; }
+        .node-text { font-family: 'Fredoka One', cursive; font-size: 13px; fill: var(--dark); text-anchor: middle; dominant-baseline: middle; }
+        .line { stroke: var(--dark); stroke-width: 3; stroke-linecap: round; }
+
+        .button-group { 
+            display: flex; 
+            gap: 10px; 
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .btn-action { 
+            flex: 1;
+            padding: 12px; 
+            border: 3px solid var(--dark); 
+            border-radius: 18px; 
+            cursor: pointer; 
+            font-family: 'Fredoka One', cursive;
+            font-size: 14px; 
+            position: relative;
+        }
+
+        .btn-check { background: #4ECDC4; color: white; box-shadow: 0 6px 0px var(--dark); }
+        .btn-check:active { transform: translateY(4px); box-shadow: 0 2px 0px var(--dark); }
+
+        .btn-reset { background: #ff7675; color: white; box-shadow: 0 6px 0px var(--dark); }
+        .btn-reset:active { transform: translateY(4px); box-shadow: 0 2px 0px var(--dark); }
+
+        .btn-home { background: #74b9ff; color: white; box-shadow: 0 6px 0px var(--dark); }
+        .btn-home:active { transform: translateY(4px); box-shadow: 0 2px 0px var(--dark); }
+
+        .score-board {
+            display: none;
+            text-align: center;
+            background: #fff;
+            border: 3px solid var(--dark);
+            border-radius: 20px;
+            padding: 15px;
+            margin-top: 15px;
+            box-shadow: 0 6px 0px var(--accent);
+        }
+
+        .score-title { font-family: 'Fredoka One', cursive; font-size: 20px; color: #2d3436; }
+        .score-val { font-family: 'Fredoka One', cursive; font-size: 32px; color: #0984e3; }
+    </style>
+</head>
+<body>
+
+<div class="game-card">
+    <h2>Latihan FPB & KPK</h2>
+    <div class="subtitle">Lengkapi Pohon Faktor lalu Tentukan FPB & KPK! 🎯</div>
+
+    <div id="quiz-container"></div>
+
+    <div class="button-group">
+        <button class="btn-action btn-check" onclick="checkAnswers()">PERIKSA</button>
+        <button class="btn-action btn-reset" onclick="generateQuiz()">ACAK SOAL</button>
+        <button class="btn-action btn-home" onclick="goToIndex()">🏠 MENU</button>
+    </div>
+
+    <div id="scoreBoard" class="score-board">
+        <div class="score-title">Nilai Kamu:</div>
+        <div id="scoreValue" class="score-val">0</div>
+        <div id="scoreMsg" style="font-size: 13px; font-weight: 800; color: #636e72;"></div>
+    </div>
+</div>
+
+<script>
+let quizData = [];
+
+function goToIndex() {
+    window.location.href = 'index.html';
+}
+
+function isPrime(num) {
+    if (num < 2) return false;
+    for (let i = 2; i <= Math.sqrt(num); i++) {
+        if (num % i === 0) return false;
+    }
+    return true;
+}
+
+function countPrimeFactors(num) {
+    let count = 0;
+    let curr = num;
+    let d = 2;
+    while (curr > 1) {
+        if (curr % d === 0) {
+            count++;
+            curr /= d;
+        } else {
+            d++;
+        }
+    }
+    return count;
+}
+
+function getGCD(a, b) {
+    while (b) {
+        let temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
+function getRandomIdealNumberPair() {
+    let num1, num2;
+    let fCount1, fCount2;
+
+    do {
+        num1 = Math.floor(Math.random() * 91) + 10; // 10 - 100
+        num2 = Math.floor(Math.random() * 91) + 10; // 10 - 100
+
+        fCount1 = countPrimeFactors(num1);
+        fCount2 = countPrimeFactors(num2);
+
+    } while (
+        num1 === num2 || 
+        fCount1 < 3 || fCount1 > 5 || 
+        fCount2 < 3 || fCount2 > 5 || 
+        getGCD(num1, num2) === 1
+    );
+
+    return [num1, num2];
+}
+
+function getFactorSteps(n) {
+    let steps = [];
+    let curr = n;
+    let d = 2;
+    while (curr > 1 && !isPrime(curr)) {
+        if (curr % d === 0) {
+            let nextN = curr / d;
+            steps.push({ prime: d, remainder: nextN });
+            curr = nextN;
+        } else {
+            d++;
+        }
+    }
+    return steps;
+}
+
+// Fungsi render SVG disesuaikan agar ruang cabang tidak terpotong
+function renderTreeSVG(number, steps, qIdx, treeType) {
+    let svgHeight = steps.length * 50 + 50;
+    let svgWidth = Math.max(160, steps.length * 55 + 90);
+    let svgHtml = `<svg width="${svgWidth}" height="${svgHeight}" style="overflow:visible; display:block; margin:0 auto;">`;
+
+    let curX = 55;
+    let curY = 25;
+    let offset = 28;
+
+    // Akar
+    svgHtml += `<ellipse cx="${curX}" cy="${curY}" rx="20" ry="16" class="node-ellipse"/>`;
+    svgHtml += `<text x="${curX}" y="${curY}" class="node-text">${number}</text>`;
+
+    steps.forEach((step, sIdx) => {
+        let leftX = curX - offset;
+        let rightX = curX + offset + 15;
+        let nextY = curY + 50;
+
+        // Lines
+        svgHtml += `<line x1="${curX}" y1="${curY+16}" x2="${leftX}" y2="${nextY-16}" class="line"/>`;
+        svgHtml += `<line x1="${curX}" y1="${curY+16}" x2="${rightX}" y2="${nextY-16}" class="line"/>`;
+
+        // Left Input (Prime)
+        svgHtml += `<foreignObject x="${leftX - 20}" y="${nextY - 16}" width="40" height="32">
+            <input type="number" class="tree-input" data-q="${qIdx}" data-tree="${treeType}" data-type="prime" data-step="${sIdx}">
+        </foreignObject>`;
+
+        // Right Input (Remainder)
+        svgHtml += `<foreignObject x="${rightX - 20}" y="${nextY - 16}" width="40" height="32">
+            <input type="number" class="tree-input" data-q="${qIdx}" data-tree="${treeType}" data-type="rem" data-step="${sIdx}">
+        </foreignObject>`;
+
+        curX = rightX;
+        curY = nextY;
+    });
+
+    svgHtml += `</svg>`;
+    return svgHtml;
+}
+
+function generateQuiz() {
+    document.getElementById('scoreBoard').style.display = 'none';
+    quizData = [];
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = '';
+
+    while (quizData.length < 5) {
+        let [n1, n2] = getRandomIdealNumberPair();
+
+        if (!quizData.some(q => (q.n1 === n1 && q.n2 === n2) || (q.n1 === n2 && q.n2 === n1))) {
+            let steps1 = getFactorSteps(n1);
+            let steps2 = getFactorSteps(n2);
+            let fpb = getGCD(n1, n2);
+            let kpk = (n1 * n2) / fpb;
+
+            quizData.push({
+                n1: n1,
+                n2: n2,
+                steps1: steps1,
+                steps2: steps2,
+                fpb: fpb,
+                kpk: kpk
+            });
+        }
+    }
+
+    quizData.forEach((q, idx) => {
+        let card = document.createElement('div');
+        card.className = 'question-card';
+
+        let header = `<div class="question-header">
+            <span>Soal #${idx + 1}: FPB & KPK dari <b>${q.n1}</b> dan <b>${q.n2}</b></span>
+            <span class="badge-q">20 Poin</span>
+        </div>`;
+
+        let tree1Html = `<div class="tree-box">
+            <div class="tree-title">Pohon ${q.n1}</div>
+            ${renderTreeSVG(q.n1, q.steps1, idx, 1)}
+        </div>`;
+
+        let tree2Html = `<div class="tree-box">
+            <div class="tree-title">Pohon ${q.n2}</div>
+            ${renderTreeSVG(q.n2, q.steps2, idx, 2)}
+        </div>`;
+
+        let treesWrapper = `<div class="trees-wrapper">${tree1Html}${tree2Html}</div>`;
+
+        let finalInputs = `<div class="final-input-group">
+            <div class="input-row">
+                <span class="final-input-label">Nilai FPB:</span>
+                <input type="number" class="final-input" id="fpb-ans-${idx}">
+            </div>
+            <div class="input-row">
+                <span class="final-input-label">Nilai KPK:</span>
+                <input type="number" class="final-input" id="kpk-ans-${idx}">
+            </div>
+        </div>`;
+
+        card.innerHTML = header + treesWrapper + finalInputs;
+        container.appendChild(card);
+    });
+}
+
+function checkAnswers() {
+    let score = 0;
+
+    quizData.forEach((q, idx) => {
+        let isCorrect = true;
+
+        // Validasi Pohon 1
+        q.steps1.forEach((step, sIdx) => {
+            let pIn = document.querySelector(`input[data-q="${idx}"][data-tree="1"][data-type="prime"][data-step="${sIdx}"]`);
+            let rIn = document.querySelector(`input[data-q="${idx}"][data-tree="1"][data-type="rem"][data-step="${sIdx}"]`);
+            
+            if (pIn && parseInt(pIn.value) === step.prime) {
+                pIn.style.borderColor = '#2ecc71'; pIn.style.backgroundColor = '#e8f8f5';
+            } else if (pIn) {
+                pIn.style.borderColor = '#e74c3c'; pIn.style.backgroundColor = '#fadbd8'; isCorrect = false;
+            }
+
+            if (rIn && parseInt(rIn.value) === step.remainder) {
+                rIn.style.borderColor = '#2ecc71'; rIn.style.backgroundColor = '#e8f8f5';
+            } else if (rIn) {
+                rIn.style.borderColor = '#e74c3c'; rIn.style.backgroundColor = '#fadbd8'; isCorrect = false;
+            }
+        });
+
+        // Validasi Pohon 2
+        q.steps2.forEach((step, sIdx) => {
+            let pIn = document.querySelector(`input[data-q="${idx}"][data-tree="2"][data-type="prime"][data-step="${sIdx}"]`);
+            let rIn = document.querySelector(`input[data-q="${idx}"][data-tree="2"][data-type="rem"][data-step="${sIdx}"]`);
+            
+            if (pIn && parseInt(pIn.value) === step.prime) {
+                pIn.style.borderColor = '#2ecc71'; pIn.style.backgroundColor = '#e8f8f5';
+            } else if (pIn) {
+                pIn.style.borderColor = '#e74c3c'; pIn.style.backgroundColor = '#fadbd8'; isCorrect = false;
+            }
+
+            if (rIn && parseInt(rIn.value) === step.remainder) {
+                rIn.style.borderColor = '#2ecc71'; rIn.style.backgroundColor = '#e8f8f5';
+            } else if (rIn) {
+                rIn.style.borderColor = '#e74c3c'; rIn.style.backgroundColor = '#fadbd8'; isCorrect = false;
+            }
+        });
+
+        // Validasi FPB
+        let fpbIn = document.getElementById(`fpb-ans-${idx}`);
+        if (fpbIn && parseInt(fpbIn.value) === q.fpb) {
+            fpbIn.style.borderColor = '#2ecc71'; fpbIn.style.backgroundColor = '#e8f8f5';
+        } else if (fpbIn) {
+            fpbIn.style.borderColor = '#e74c3c'; fpbIn.style.backgroundColor = '#fadbd8'; isCorrect = false;
+        }
+
+        // Validasi KPK
+        let kpkIn = document.getElementById(`kpk-ans-${idx}`);
+        if (kpkIn && parseInt(kpkIn.value) === q.kpk) {
+            kpkIn.style.borderColor = '#2ecc71'; kpkIn.style.backgroundColor = '#e8f8f5';
+        } else if (kpkIn) {
+            kpkIn.style.borderColor = '#e74c3c'; kpkIn.style.backgroundColor = '#fadbd8'; isCorrect = false;
+        }
+
+        if (isCorrect) score += 20;
+    });
+
+    let scoreBoard = document.getElementById('scoreBoard');
+    let scoreVal = document.getElementById('scoreValue');
+    let scoreMsg = document.getElementById('scoreMsg');
+
+    scoreBoard.style.display = 'block';
+    scoreVal.textContent = score;
+
+    if (score === 100) {
+        scoreMsg.textContent = "Luar Biasa! Kamu Menguasai FPB & KPK! 🎉";
+    } else if (score >= 60) {
+        scoreMsg.textContent = "Bagus! Tingkatkan ketelitianmu lagi ya! 👍";
+    } else {
+        scoreMsg.textContent = "Jangan ragu untuk terus mencoba! 💪";
+    }
+
+    scoreBoard.scrollIntoView({ behavior: 'smooth' });
+}
+
+window.onload = generateQuiz;
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Kalkulator FPB & KPK interaktif bergaya game petualangan matematika untuk anak-anak dengan numpad kustom.">
+    <meta name="description" content="Kalkulator FPB & KPK interaktif bergaya game petualangan matematika untuk anak-anak.">
     <title>Petualangan Angka: FPB & KPK</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -77,7 +77,7 @@
         
         input { 
             width: 100%; 
-            padding: 15px 10px; 
+            padding: 15px 5px; 
             border: 3px solid var(--dark); 
             border-radius: 18px; 
             text-align: center; 
@@ -86,11 +86,10 @@
             color: var(--dark);
             background: #fff;
             box-shadow: 0 6px 0px var(--dark);
-            cursor: pointer;
-            caret-color: transparent;
+            outline: none;
         }
 
-        input.active-input {
+        input:focus {
             background: #fffdf0;
             border-color: #e67e22;
             transform: translateY(2px);
@@ -115,20 +114,20 @@
         /* Action Buttons */
         .button-group { 
             display: flex; 
-            gap: 15px; 
+            gap: 10px; 
             justify-content: center;
             margin-bottom: 20px;
         }
         
         .btn-action { 
             flex: 1;
-            padding: 14px; 
+            padding: 12px 5px; 
             border: 3px solid var(--dark); 
             border-radius: 18px; 
             cursor: pointer; 
             font-family: 'Fredoka One', cursive;
-            font-size: 18px; 
-            letter-spacing: 1px;
+            font-size: 14px; 
+            letter-spacing: 0.5px;
             position: relative;
         }
 
@@ -152,52 +151,14 @@
             box-shadow: 0 2px 0px var(--dark);
         }
 
-        /* KUSTOM NUMPAD */
-        .numpad-container {
-            background: #dfe6e9;
-            border: 3px solid var(--dark);
-            border-radius: 20px;
-            padding: 12px;
-            margin-top: 15px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            box-shadow: inset 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .numpad-container.hidden {
-            display: none;
-        }
-
-        .btn-num {
-            background: #fff;
-            border: 2px solid var(--dark);
-            border-radius: 12px;
-            padding: 12px 0;
-            font-family: 'Fredoka One', cursive;
-            font-size: 20px;
-            color: var(--dark);
-            box-shadow: 0 4px 0px var(--dark);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-num:active {
-            transform: translateY(3px);
-            box-shadow: 0 1px 0px var(--dark);
-        }
-
-        .btn-delete {
-            background: #ffeaa7;
-        }
-
         .btn-home {
             background: #74b9ff;
             color: white;
-            font-size: 15px;
-            font-weight: 900;
+            box-shadow: 0 6px 0px var(--dark);
+        }
+        .btn-home:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px var(--dark);
         }
 
         /* Hasil Output */
@@ -279,77 +240,30 @@
     <div class="input-group">
         <div class="input-box">
             <span class="input-label">Angka 1</span>
-            <input type="text" id="num1" placeholder="?" readonly onclick="selectInput('num1')">
+            <input type="number" id="num1" inputmode="numeric" pattern="[0-9]*" placeholder="?" maxlength="4">
         </div>
         <div class="input-box">
             <span class="input-label">Angka 2</span>
-            <input type="text" id="num2" placeholder="?" readonly onclick="selectInput('num2')">
+            <input type="number" id="num2" inputmode="numeric" pattern="[0-9]*" placeholder="?" maxlength="4">
         </div>
         <div class="input-box">
             <span class="input-label">Angka 3</span>
-            <input type="text" id="num3" placeholder="Opsional" readonly onclick="selectInput('num3')">
+            <input type="number" id="num3" inputmode="numeric" pattern="[0-9]*" placeholder="Opsional" maxlength="4">
         </div>
     </div>
 
     <div class="button-group">
         <button class="btn-action btn-calc" onclick="calculate()">HITUNG !</button>
         <button class="btn-action btn-reset" onclick="resetAll()">RESET</button>
-    </div>
-
-    <div id="game-numpad" class="numpad-container">
-        <button class="btn-num" onclick="pressNum('1')">1</button>
-        <button class="btn-num" onclick="pressNum('2')">2</button>
-        <button class="btn-num" onclick="pressNum('3')">3</button>
-        <button class="btn-num" onclick="pressNum('4')">4</button>
-        <button class="btn-num" onclick="pressNum('5')">5</button>
-        <button class="btn-num" onclick="pressNum('6')">6</button>
-        <button class="btn-num" onclick="pressNum('7')">7</button>
-        <button class="btn-num" onclick="pressNum('8')">8</button>
-        <button class="btn-num" onclick="pressNum('9')">9</button>
-        <button class="btn-num btn-delete" onclick="pressDelete()">⌫</button>
-        <button class="btn-num" onclick="pressNum('0')">0</button>
-        <button class="btn-num btn-home" onclick="goToIndex()">🏠 MENU</button>
+        <button class="btn-action btn-home" onclick="goToIndex()">🏠 MENU</button>
     </div>
 
     <div id="output"></div>
 </div>
 
 <script>
-let currentTargetInputId = 'num1'; 
-
-document.getElementById(currentTargetInputId).classList.add('active-input');
-
 function goToIndex() {
     window.location.href = 'index.html';
-}
-
-function selectInput(id) {
-    document.getElementById('num1').classList.remove('active-input');
-    document.getElementById('num2').classList.remove('active-input');
-    document.getElementById('num3').classList.remove('active-input');
-    
-    currentTargetInputId = id;
-    document.getElementById(id).classList.add('active-input');
-    document.getElementById('game-numpad').classList.remove('hidden');
-}
-
-function pressNum(num) {
-    const inputEl = document.getElementById(currentTargetInputId);
-    if (inputEl.value.length < 4) {
-        inputEl.value += num;
-    }
-}
-
-function pressDelete() {
-    const inputEl = document.getElementById(currentTargetInputId);
-    inputEl.value = inputEl.value.slice(0, -1);
-}
-
-function hideNumpad() {
-    document.getElementById('game-numpad').classList.add('hidden');
-    document.getElementById('num1').classList.remove('active-input');
-    document.getElementById('num2').classList.remove('active-input');
-    document.getElementById('num3').classList.remove('active-input');
 }
 
 function getPrimeFactors(n) {
@@ -377,11 +291,12 @@ function formatFactors(factors) {
 }
 
 function resetAll() {
-    document.getElementById('num1').value = '';
+    const input1 = document.getElementById('num1');
+    input1.value = '';
     document.getElementById('num2').value = '';
     document.getElementById('num3').value = '';
     document.getElementById('output').innerHTML = '';
-    selectInput('num1');
+    input1.focus();
 }
 
 function calculate() {
@@ -396,7 +311,10 @@ function calculate() {
         return;
     }
 
-    hideNumpad();
+    // Sembunyikan keyboard virtual setelah menekan tombol hitung
+    document.getElementById('num1').blur();
+    document.getElementById('num2').blur();
+    document.getElementById('num3').blur();
 
     let allFactors = inputs.map(n => getPrimeFactors(n));
     let html = `<div class="section-title">✨ Faktorisasi Prima:</div>`;

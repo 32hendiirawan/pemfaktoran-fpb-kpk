@@ -108,19 +108,23 @@
             color: var(--dark);
         }
 
+        .btn-practice {
+            background: #a29bfe;
+            color: white;
+        }
+
         .btn-about {
             background: #ff7675;
             color: white;
         }
 
-        /* Icon Badge di dalam Tombol */
         .btn-icon {
             margin-right: 8px;
             font-size: 20px;
             vertical-align: middle;
         }
 
-        /* Modal Pop-up untuk About Profil Pembuat */
+        /* Modal Pop-up */
         .modal-overlay {
             position: absolute;
             top: 0;
@@ -166,6 +170,29 @@
             margin-top: 0;
             margin-bottom: 15px;
             text-shadow: 2px 2px 0px var(--accent);
+        }
+
+        .practice-option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .btn-opt {
+            padding: 12px;
+            border: 3px solid var(--dark);
+            border-radius: 16px;
+            font-family: 'Fredoka One', cursive;
+            font-size: 15px;
+            text-decoration: none;
+            color: var(--dark);
+            box-shadow: 0 4px 0px var(--dark);
+        }
+
+        .btn-opt:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0px var(--dark);
         }
 
         .profile-info {
@@ -256,6 +283,10 @@
         <a href="fpb-kpk.html" class="btn-menu btn-fpbkpk">
             <span class="btn-icon">🏆</span>Kalkulator FPB & KPK
         </a>
+
+        <button class="btn-menu btn-practice" onclick="openPracticeModal()">
+            <span class="btn-icon">✏️</span>Latihan Soal
+        </button>
         
         <button class="btn-menu btn-about" onclick="openAbout()">
             <span class="btn-icon">✨</span>Tentang Pembuat
@@ -264,6 +295,25 @@
 
     <div class="footer-credit">V1.0 • O'Cre - Omah Creative</div>
 
+    <!-- Modal Pilihan Latihan -->
+    <div id="practiceModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3 class="modal-title" style="color: #6c5ce7;">Pilih Jenis Latihan ✏️</h3>
+            
+            <div class="practice-option-group">
+                <button class="btn-opt" style="background: #FFE66D; width: 100%; cursor: pointer;" onclick="goToPage('latihan-faktorisasi.html')">
+                    🌳 1. Latihan Pohon Faktor
+                </button>
+                <button class="btn-opt" style="background: #74b9ff; color: white; width: 100%; cursor: pointer;" onclick="goToPage('latihan-fpb-kpk.html')">
+                    🚀 2. Latihan FPB & KPK
+                </button>
+            </div>
+
+            <button class="btn-close" onclick="closePracticeModal()">BATAL</button>
+        </div>
+    </div>
+
+    <!-- Modal About -->
     <div id="aboutModal" class="modal-overlay" onclick="closeAboutOutside(event)">
         <div class="modal-box" onclick="event.stopPropagation()">
             <h3 class="modal-title">Halo Sahabat! 👋</h3>
@@ -300,6 +350,43 @@ function closeAbout() {
 function closeAboutOutside(event) {
     closeAbout();
 }
+
+function openPracticeModal() {
+    document.getElementById('practiceModal').classList.add('show');
+}
+
+function closePracticeModal() {
+    document.getElementById('practiceModal').classList.remove('show');
+}
+
+function closePracticeModalOutside(event) {
+    closePracticeModal();
+}
+
+function goToPage(url) {
+    window.location.href = url;
+}
+
+function openPracticeModal() {
+    document.getElementById('practiceModal').classList.add('show');
+}
+
+function closePracticeModal() {
+    document.getElementById('practiceModal').classList.remove('show');
+}
+
+// Menutup modal jika area luar kotak diklik
+document.getElementById('practiceModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closePracticeModal();
+    }
+});
+
+document.getElementById('aboutModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeAbout();
+    }
+});
 </script>
 
 </body>
