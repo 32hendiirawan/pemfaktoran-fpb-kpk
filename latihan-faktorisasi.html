@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Latihan Soal Faktorisasi Prima Interaktif">
-    <title>Latihan Faktorisasi Prima</title>
+    <title>Latihan Faktorisasi Prima - Lembar Kerja</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
             --primary: #FF6B6B;
             --secondary: #4ECDC4;
             --accent: #FFE66D;
-            --dark: #2F3E46;
-            --bg-game: #F7FFF7;
+            --dark: navy;
+            --bg-game: #FFFDF9;
         }
 
         * {
@@ -21,188 +22,268 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
         body { 
-            background: linear-gradient(180deg, #74b9ff 0%, #a29bfe 100%);
-            padding: 10px; 
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            padding: 6px; 
             color: var(--dark); 
             margin: 0;
-            min-height: 100vh;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .sheet-container { 
+            width: 100%;
+            max-width: 450px; 
+            height: 98vh;
+            max-height: 740px;
+            background: var(--bg-game); 
+            padding: 8px 12px; 
+            border-radius: 18px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border: 4px solid var(--dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sheet-header {
+            border-bottom: 2px dashed #b2bec3;
+            padding-bottom: 3px;
+            margin-bottom: 4px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        .game-card { 
-            width: 100%;
-            max-width: 450px; 
-            background: var(--bg-game); 
-            padding: 20px; 
-            border-radius: 30px; 
-            box-shadow: 0 12px 0px rgba(0,0,0,0.15), inset 0 -8px 0px rgba(0,0,0,0.05);
-            border: 4px solid var(--dark);
-            position: relative;
-        }
-
         h2 { 
             font-family: 'Fredoka One', cursive;
-            text-align: center; 
             color: #2d3436; 
-            font-size: 24px;
-            margin: 0 0 5px 0;
-            text-shadow: 3px 3px 0px var(--accent);
+            font-size: 16px;
+            margin: 0;
+            text-shadow: 2px 2px 0px var(--accent);
+            text-align: center;
         }
 
         .subtitle {
-            text-align: center; 
-            font-size: 13px; 
+            font-size: 10px; 
             color: #636e72; 
-            font-weight: 700;
-            margin-bottom: 15px;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        /* Grid 2 Kolom x 3 Baris */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 6px;
+            flex-grow: 1;
+            margin-bottom: 4px;
         }
 
         .question-card {
             background: #fff;
-            border: 3px solid var(--dark);
-            border-radius: 20px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 6px 0px rgba(0,0,0,0.05);
+            border: 1.5px solid var(--dark);
+            border-radius: 10px;
+            padding: 5px 8px;
+            box-shadow: 0 3px 0px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .question-card.example-card {
+            background: #fffdf0;
+            border: 2px solid #e67e22;
         }
 
         .question-header {
             font-family: 'Fredoka One', cursive;
-            font-size: 16px;
-            color: #0984e3;
-            margin-bottom: 10px;
+            font-size: 10px;
+            color: navy;
+            margin-bottom: 1px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .badge-q {
-            background: var(--accent);
-            padding: 4px 10px;
-            border-radius: 10px;
-            border: 2px solid var(--dark);
-            color: var(--dark);
-            font-size: 12px;
-        }
-
         .tree-container {
             display: flex;
             justify-content: center;
-            overflow-x: auto;
-            padding: 10px 0;
+            align-items: center;
+            flex-grow: 1;
+            overflow: hidden;
         }
 
         .tree-input {
-            width: 45px;
-            height: 38px;
+            width: 22px;
+            height: 22px;
             text-align: center;
             font-family: 'Fredoka One', cursive;
-            font-size: 16px;
-            border: 2px solid var(--dark);
-            border-radius: 10px;
+            font-size: 11px; /* Font input 11px */
+            border: 1.5px solid navy;
+            border-radius: 50% !important;
+            -webkit-border-radius: 50% !important;
             outline: none;
-            background: #fffdf0;
+            background: lightskyblue;
         }
 
-        .tree-input:focus {
-            border-color: #e67e22;
-            background: #fff;
+        .tree-input:disabled {
+            background: #dfe6e9;
+            color: #2d3436;
+            font-weight: bold;
         }
 
         .final-input-group {
-            margin-top: 15px;
+            margin-top: 2px;
             background: #f0f7ff;
-            padding: 10px;
-            border-radius: 12px;
-            border: 2px dashed #74b9ff;
+            padding: 3px 5px;
+            border-radius: 5px;
+            border: 1px dashed #74b9ff;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .final-input-label {
-            font-size: 12px;
+            font-size: 9px;
             font-weight: 800;
             color: #2d3436;
-            margin-bottom: 5px;
+            margin-bottom: 1px;
             display: block;
         }
 
         .final-input {
-            width: 100%;
-            padding: 8px 12px;
-            border: 2px solid var(--dark);
-            border-radius: 10px;
+            width: 100px;
+            padding: 2px 4px;
+            border: 1.5px solid var(--dark);
+            border-radius: 4px;
             font-family: 'Fredoka One', cursive;
-            font-size: 16px;
+            font-size: 11px; /* Font jawaban 11px */
             text-align: center;
             outline: none;
+            background-color: lightskyblue;
         }
 
-        .node-ellipse { fill: #fff; stroke: var(--dark); stroke-width: 3; }
-        .node-text { font-family: 'Fredoka One', cursive; font-size: 14px; fill: var(--dark); text-anchor: middle; dominant-baseline: middle; }
-        .line { stroke: var(--dark); stroke-width: 3; stroke-linecap: round; }
-
-        .button-group { 
-            display: flex; 
-            gap: 10px; 
-            justify-content: center;
-            margin-top: 15px;
+        .final-input:disabled {
+            background: #dfe6e9;
+            color: #2d3436;
+            font-weight: bold;
         }
-        
+
+        .node-ellipse { fill: lightpink; stroke: var(--dark); stroke-width: 1.5; }
+        .node-text { font-family: 'Fredoka One', cursive; font-size: 11px; fill: navy; text-anchor: middle; dominant-baseline: middle; } /* Font SVG 11px */
+        .line { stroke: var(--dark); stroke-width: 1.5; stroke-linecap: round; }
+
+        /* Panel Tombol Bawah dalam 1 Baris */
+        .bottom-panel {
+            display: flex;
+            gap: 6px;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+        }
+
         .btn-action { 
             flex: 1;
-            padding: 12px; 
-            border: 3px solid var(--dark); 
-            border-radius: 18px; 
+            padding: 7px 4px; 
+            border: 2px solid var(--dark); 
+            border-radius: 8px; 
             cursor: pointer; 
             font-family: 'Fredoka One', cursive;
-            font-size: 14px; 
-            position: relative;
-        }
-
-        .btn-check { background: #4ECDC4; color: white; box-shadow: 0 6px 0px var(--dark); }
-        .btn-check:active { transform: translateY(4px); box-shadow: 0 2px 0px var(--dark); }
-
-        .btn-reset { background: #ff7675; color: white; box-shadow: 0 6px 0px var(--dark); }
-        .btn-reset:active { transform: translateY(4px); box-shadow: 0 2px 0px var(--dark); }
-
-        .btn-home { background: #74b9ff; color: white; box-shadow: 0 6px 0px var(--dark); }
-        .btn-home:active { transform: translateY(4px); box-shadow: 0 2px 0px var(--dark); }
-
-        .score-board {
-            display: none;
+            font-size: 11px; 
             text-align: center;
-            background: #fff;
-            border: 3px solid var(--dark);
-            border-radius: 20px;
-            padding: 15px;
-            margin-top: 15px;
-            box-shadow: 0 6px 0px var(--accent);
+            transition: transform 0.1s;
         }
 
-        .score-title { font-family: 'Fredoka One', cursive; font-size: 20px; color: #2d3436; }
-        .score-val { font-family: 'Fredoka One', cursive; font-size: 32px; color: #0984e3; }
+        .btn-check { background: #4ECDC4; color: white; box-shadow: 0 3px 0px var(--dark); }
+        .btn-check:active { transform: translateY(2px); box-shadow: 0 1px 0px var(--dark); }
+
+        .btn-save { background: #0984e3; color: white; box-shadow: 0 3px 0px var(--dark); }
+        .btn-save:active { transform: translateY(2px); box-shadow: 0 1px 0px var(--dark); }
+
+        .btn-reset { background: #ff7675; color: white; box-shadow: 0 3px 0px var(--dark); }
+        .btn-reset:active { transform: translateY(2px); box-shadow: 0 1px 0px var(--dark); }
+
+        .btn-home { background: #a29bfe; color: white; box-shadow: 0 3px 0px var(--dark); }
+        .btn-home:active { transform: translateY(2px); box-shadow: 0 1px 0px var(--dark); }
+
+        /* Modal Popup Nilai */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 20px;
+            border: 3px solid var(--dark);
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            max-width: 320px;
+            width: 90%;
+            animation: popUp 0.3s ease-in-out;
+        }
+        @keyframes popUp {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .modal-title { font-family: 'Fredoka One', cursive; font-size: 20px; color: #2d3436; margin-bottom: 5px; }
+        .modal-score { font-family: 'Fredoka One', cursive; font-size: 48px; color: #d63031; margin: 5px 0; }
+        .modal-msg { font-size: 13px; font-weight: 800; color: #636e72; margin-bottom: 15px; }
+        .modal-close {
+            background: #ff7675; color: white; border: 2px solid var(--dark);
+            padding: 6px 15px; border-radius: 8px; font-family: 'Fredoka One', cursive;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-<div class="game-card">
-    <h2>Latihan Faktorisasi Prima</h2>
-    <div class="subtitle">Lengkapi Pohon Faktor & Tulis Hasilnya! 🌳</div>
-
-    <div id="quiz-container"></div>
-
-    <div class="button-group">
-        <button class="btn-action btn-check" onclick="checkAnswers()">PERIKSA</button>
-        <button class="btn-action btn-reset" onclick="generateQuiz()">ACAK SOAL</button>
-        <button class="btn-action btn-home" onclick="goToIndex()">🏠 MENU</button>
+<div class="sheet-container" id="captureSheet">
+    <div class="sheet-header">
+        <div>
+            <h2>Latihan Faktorisasi Prima</h2>
+            <div class="subtitle">Lengkapi Pohon Faktor & Tulis Jawabannya (Gunakan "^" untuk pangkat)</div>
+        </div>
     </div>
 
-    <div id="scoreBoard" class="score-board">
-        <div class="score-title">Nilai Kamu:</div>
-        <div id="scoreValue" class="score-val">0</div>
-        <div id="scoreMsg" style="font-size: 13px; font-weight: 800; color: #636e72;"></div>
+    <!-- Container Grid 2 Kolom x 3 Baris -->
+    <div id="quiz-container" class="grid-container"></div>
+
+    <!-- Button Control dalam 1 Baris di Bagian Bawah -->
+    <div class="bottom-panel">
+        <button class="btn-action btn-check" onclick="checkAnswers()">PERIKSA JAWABAN</button>
+        <button class="btn-action btn-reset" onclick="generateQuiz()">🔄 ACAK</button>
+        <button class="btn-action btn-home" onclick="goToIndex()">🏠 MENU</button>
+    </div>
+</div>
+
+<!-- Modal Popup Nilai -->
+<div id="scoreModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-title">Hasil Latihan Kamu</div>
+        <div id="modalScoreVal" class="modal-score">0</div>
+        <div id="modalScoreMsg" class="modal-msg">Predikat...</div>
+        <button class="modal-close" onclick="closeModal()">TUTUP</button>
     </div>
 </div>
 
@@ -221,7 +302,6 @@ function isPrime(num) {
     return true;
 }
 
-// Menghitung jumlah total faktor prima (misal 12 -> 2,2,3 = 3 faktor)
 function countPrimeFactors(num) {
     let count = 0;
     let curr = num;
@@ -237,14 +317,13 @@ function countPrimeFactors(num) {
     return count;
 }
 
-// Menghasilkan angka acak <= 200 yang memiliki 3 sampai 5 faktor prima
 function getRandomIdealCompositeNumber() {
     let num;
     let factorCount;
     do {
-        num = Math.floor(Math.random() * 190) + 10; // 10 - 200
+        num = Math.floor(Math.random() * 190) + 10;
         factorCount = countPrimeFactors(num);
-    } while (factorCount < 3 || factorCount > 5);
+    } while (factorCount < 3 || factorCount > 4);
     return num;
 }
 
@@ -279,81 +358,139 @@ function getFactorString(n) {
     return Object.entries(factors).map(([b, e]) => e > 1 ? `${b}^${e}` : `${b}`).join('x');
 }
 
+const superscriptMap = {
+    '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴',
+    '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹'
+};
+
+function setupSuperscriptInput(inputEl) {
+    inputEl.addEventListener('input', function(e) {
+        let cursorPos = this.selectionStart;
+        let val = this.value;
+
+        let rawVal = val;
+        for (let [num, sup] of Object.entries(superscriptMap)) {
+            rawVal = rawVal.split(sup).join('^' + num);
+        }
+        this.setAttribute('data-raw-value', rawVal);
+
+        let visualVal = val.replace(/\^([0-9]+)/g, (match, p1) => {
+            return p1.split('').map(char => superscriptMap[char] || char).join('');
+        });
+
+        if (visualVal !== val) {
+            this.value = visualVal;
+            this.setSelectionRange(cursorPos, cursorPos);
+        }
+    });
+}
+
 function generateQuiz() {
-    document.getElementById('scoreBoard').style.display = 'none';
     quizData = [];
     const container = document.getElementById('quiz-container');
     container.innerHTML = '';
 
-    while (quizData.length < 5) {
+    // 1. Grid Pertama (Contoh: Bilangan 12)
+    let exampleData = {
+        number: 12,
+        steps: [{ prime: 2, remainder: 6 }, { prime: 2, remainder: 3 }],
+        factorStr: '2^2x3',
+        isExample: true
+    };
+    quizData.push(exampleData);
+
+    // 2. 5 Soal Latihan Berikutnya
+    while (quizData.length < 6) {
         let n = getRandomIdealCompositeNumber();
         if (!quizData.some(q => q.number === n)) {
             let steps = getFactorSteps(n);
             let factorStr = getFactorString(n);
-            quizData.push({ number: n, steps: steps, factorStr: factorStr });
+            quizData.push({ number: n, steps: steps, factorStr: factorStr, isExample: false });
         }
     }
 
+    // Render ke UI
     quizData.forEach((q, idx) => {
         let card = document.createElement('div');
-        card.className = 'question-card';
+        card.className = q.isExample ? 'question-card example-card' : 'question-card';
 
-        let header = `<div class="question-header">
-            <span>Soal #${idx + 1}: Pohon Faktor untuk <b>${q.number}</b></span>
-            <span class="badge-q">Max 200</span>
-        </div>`;
+        let headerText = q.isExample ? `Contoh: Faktorisasi dari <b>12</b> adalah....` : `${idx}. Faktorisasi prima dari <b>${q.number}</b> adalah....`;
+        let header = `<div class="question-header"><span>${headerText}</span></div>`;
 
-        let svgHeight = q.steps.length * 60 + 50;
-        let svgWidth = 320;
-        let svgHtml = `<svg width="${svgWidth}" height="${svgHeight}" style="overflow:visible;">`;
+        let svgHeight = q.steps.length * 26 + 20;
+        let svgWidth = 160;
+        let svgHtml = `<svg width="${svgWidth}" height="${svgHeight}" style="overflow:visible; display:block; margin:0 auto;">`;
 
         let curX = svgWidth / 2;
-        let curY = 30;
-        let offset = 40;
+        let curY = 12;
+        let offset = 24;
 
-        // Root Node
-        svgHtml += `<ellipse cx="${curX}" cy="${curY}" rx="22" ry="18" class="node-ellipse"/>`;
+        let linesHtml = '';
+        let tempX = curX;
+        let tempY = curY;
+        q.steps.forEach((step, sIdx) => {
+            let leftX = tempX - offset;
+            let rightX = tempX + offset;
+            let nextY = tempY + 26;
+
+            linesHtml += `<line x1="${tempX}" y1="${tempY}" x2="${leftX}" y2="${nextY}" class="line"/>`;
+            linesHtml += `<line x1="${tempX}" y1="${tempY}" x2="${rightX}" y2="${nextY}" class="line"/>`;
+
+            tempX = rightX;
+            tempY = nextY;
+        });
+
+        svgHtml += linesHtml;
+
+        svgHtml += `<ellipse cx="${curX}" cy="${curY}" rx="11" ry="11" class="node-ellipse"/>`;
         svgHtml += `<text x="${curX}" y="${curY}" class="node-text">${q.number}</text>`;
 
+        tempX = curX;
+        tempY = curY;
         q.steps.forEach((step, sIdx) => {
-            let leftX = curX - offset;
-            let rightX = curX + offset;
-            let nextY = curY + 60;
+            let leftX = tempX - offset;
+            let rightX = tempX + offset;
+            let nextY = tempY + 26;
 
-            // Lines
-            svgHtml += `<line x1="${curX}" y1="${curY+18}" x2="${leftX}" y2="${nextY-18}" class="line"/>`;
-            svgHtml += `<line x1="${curX}" y1="${curY+18}" x2="${rightX}" y2="${nextY-18}" class="line"/>`;
+            let primeVal = q.isExample ? `value="${step.prime}" disabled` : '';
+            let remVal = q.isExample ? `value="${step.remainder}" disabled` : '';
 
-            // Left Input (Pembagi Prima)
-            svgHtml += `<foreignObject x="${leftX - 22}" y="${nextY - 18}" width="45" height="38">
-                <input type="number" class="tree-input" data-q="${idx}" data-type="prime" data-step="${sIdx}">
+            svgHtml += `<foreignObject x="${leftX - 11}" y="${nextY - 11}" width="22" height="24">
+                <input type="number" class="tree-input" style="border-radius: 50%; -webkit-border-radius: 50%;" data-q="${idx}" data-type="prime" data-step="${sIdx}" ${primeVal}>
             </foreignObject>`;
 
-            // Right Input (Sisa / Bilangan Prima Terakhir)
-            svgHtml += `<foreignObject x="${rightX - 22}" y="${nextY - 18}" width="45" height="38">
-                <input type="number" class="tree-input" data-q="${idx}" data-type="rem" data-step="${sIdx}">
+            svgHtml += `<foreignObject x="${rightX - 11}" y="${nextY - 11}" width="22" height="24">
+                <input type="number" class="tree-input" style="border-radius: 50%; -webkit-border-radius: 50%;" data-q="${idx}" data-type="rem" data-step="${sIdx}" ${remVal}>
             </foreignObject>`;
 
-            curX = rightX;
-            curY = nextY;
+            tempX = rightX;
+            tempY = nextY;
         });
 
         svgHtml += `</svg>`;
 
+        let exVal = q.isExample ? `value="2²×3" disabled` : '';
+        let exRaw = q.isExample ? `data-raw-value="2^2x3"` : `data-raw-value=""`;
+
         let finalInput = `<div class="final-input-group">
-            <span class="final-input-label">Tuliskan Faktorisasi Prima (contoh: 2^2x3 atau 2x3x5):</span>
-            <input type="text" class="final-input" id="final-ans-${idx}" placeholder="Contoh: 2^2x3" data-q="${idx}">
+            <span class="final-input-label">${q.isExample ? 'Jawaban:' : 'Jawaban :'}</span>
+            <input type="text" class="final-input" id="final-ans-${idx}" placeholder="" data-q="${idx}" ${exRaw} ${exVal}>
         </div>`;
 
         card.innerHTML = header + `<div class="tree-container">${svgHtml}</div>` + finalInput;
         container.appendChild(card);
+    });
+
+    document.querySelectorAll('.final-input:not(:disabled)').forEach(input => {
+        setupSuperscriptInput(input);
     });
 }
 
 function checkAnswers() {
     let score = 0;
 
-    quizData.forEach((q, idx) => {
+    for (let idx = 1; idx < quizData.length; idx++) {
+        let q = quizData[idx];
         let isCorrect = true;
 
         q.steps.forEach((step, sIdx) => {
@@ -383,17 +520,16 @@ function checkAnswers() {
         });
 
         let fInput = document.getElementById(`final-ans-${idx}`);
-        let userAns = fInput.value.toLowerCase().replace(/\s+/g, '').replace(/[*×]/g, 'x');
-        
-        let altAns = [];
+        let rawVal = fInput.getAttribute('data-raw-value') || fInput.value;
+        let cleanUserAns = rawVal.toLowerCase().replace(/\s+/g, '').replace(/[*×x]/g, 'x');
+
+        let standardFactorStr = q.factorStr.toLowerCase();
         let rawFactors = [];
         q.steps.forEach(s => rawFactors.push(s.prime));
         rawFactors.push(q.steps[q.steps.length - 1].remainder);
+        let expandedFactorStr = rawFactors.join('x');
 
-        altAns.push(rawFactors.join('x'));
-        altAns.push(q.factorStr.toLowerCase());
-
-        if (altAns.includes(userAns)) {
+        if (cleanUserAns === standardFactorStr || cleanUserAns === expandedFactorStr) {
             fInput.style.borderColor = '#2ecc71';
             fInput.style.backgroundColor = '#e8f8f5';
         } else {
@@ -403,27 +539,62 @@ function checkAnswers() {
         }
 
         if (isCorrect) score += 20;
-    });
-
-    let scoreBoard = document.getElementById('scoreBoard');
-    let scoreVal = document.getElementById('scoreValue');
-    let scoreMsg = document.getElementById('scoreMsg');
-
-    scoreBoard.style.display = 'block';
-    scoreVal.textContent = score;
-
-    if (score === 100) {
-        scoreMsg.textContent = "Sempurna! Kamu Hebat Sekali! 🎉";
-    } else if (score >= 60) {
-        scoreMsg.textContent = "Bagus! Teruskan berlatih ya! 👍";
-    } else {
-        scoreMsg.textContent = "Jangan menyerah, ayo coba lagi! 💪";
     }
 
-    scoreBoard.scrollIntoView({ behavior: 'smooth' });
+    let modalScoreVal = document.getElementById('modalScoreVal');
+    let modalScoreMsg = document.getElementById('modalScoreMsg');
+    modalScoreVal.textContent = score;
+
+    if (score === 100) {
+        modalScoreMsg.textContent = "Sempurna! Predikat: A (Sangat Memuaskan) 🎉";
+    } else if (score >= 80) {
+        modalScoreMsg.textContent = "Hebat! Predikat: B (Memuaskan) 👍";
+    } else if (score >= 60) {
+        modalScoreMsg.textContent = "Cukup Baik! Predikat: C (Perlu Ditingkatkan) 💪";
+    } else {
+        modalScoreMsg.textContent = "Tetap Semangat! Predikat: D (Ayo Belajar Lagi) 📚";
+    }
+
+    document.getElementById('scoreModal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('scoreModal').style.display = 'none';
+}
+
+function saveAsImage() {
+    const sheet = document.getElementById('captureSheet');
+    let originalBoxShadow = sheet.style.boxShadow;
+    sheet.style.boxShadow = 'none';
+
+    html2canvas(sheet, { 
+        scale: 3, 
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null,
+        windowWidth: document.documentElement.offsetWidth
+    }).then(canvas => {
+        sheet.style.boxShadow = originalBoxShadow;
+        let link = document.createElement('a');
+        link.download = 'Lembar-Kerja-Faktorisasi-Prima.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    }).catch(err => {
+        sheet.style.boxShadow = originalBoxShadow;
+        console.error("Gagal menyimpan gambar:", err);
+    });
 }
 
 window.onload = generateQuiz;
+
+(function() {
+    window.addEventListener('contextmenu', e => { e.preventDefault(); e.stopPropagation(); }, true);
+    window.addEventListener('keydown', function(e) {
+        if (e.key === 'F12') { e.preventDefault(); e.stopPropagation(); }
+        if (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) { e.preventDefault(); e.stopPropagation(); }
+        if (e.ctrlKey && ['U', 'S', 'A', 'C'].includes(e.key.toUpperCase())) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
+})();
 </script>
 </body>
 </html>
